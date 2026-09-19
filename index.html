@@ -3,71 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matrimonial Bio-Data Profile Maker</title>
+  <title>BioData Forge - Matrimonial Profile Maker</title>
 
-  <!-- Tailwind CSS CDN -->
+  <!-- Tailwind CSS CDN with dark mode class configuration -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fdf4f4',
+              500: '#e11d48',
+              700: '#8b1111',
+              900: '#4c0519',
+            }
+          }
+        }
+      }
+    };
+  </script>
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Yatra+One&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-  <!-- html2canvas for HD PNG Export -->
+  <!-- html2canvas for High Resolution PNG Export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-  <!-- Custom CSS -->
+  <!-- Custom Styles -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans min-h-screen">
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-200">
 
-  <!-- Top App Bar -->
-  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-4 lg:px-8 py-3 flex items-center justify-between shadow-lg">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-rose-600 flex items-center justify-center text-white shadow-md">
-        <i class="fa-solid fa-scroll text-lg"></i>
+  <!-- TOP NAVBAR -->
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-3 sm:px-6 py-2.5 shadow-sm">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-rose-700 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-scroll text-base sm:text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base sm:text-lg leading-none tracking-tight">BioData<span class="text-rose-700 dark:text-amber-400">Forge</span></h1>
+          <p class="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400">Matrimonial Bio-Data Maker</p>
+        </div>
       </div>
-      <div>
-        <h1 class="font-bold text-lg leading-tight tracking-tight text-white">BioData Forge</h1>
-        <p class="text-xs text-slate-400">Indian Matrimonial Bio-Data Generator</p>
-      </div>
-    </div>
 
-    <div class="flex items-center gap-2 sm:gap-3">
-      <button id="btnLoadSample" class="text-xs sm:text-sm px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium transition border border-amber-500/30 flex items-center gap-1.5">
-        <i class="fa-solid fa-wand-magic-sparkles"></i>
-        <span class="hidden sm:inline">Load Sample</span>
-      </button>
-      <button id="btnPrint" class="text-xs sm:text-sm px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium transition border border-slate-700 flex items-center gap-1.5">
-        <i class="fa-solid fa-print"></i>
-        <span class="hidden sm:inline">Print / PDF</span>
-      </button>
-      <button id="btnExportPNG" class="text-xs sm:text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-600 hover:to-rose-700 text-white font-semibold transition shadow-md shadow-rose-950/40 flex items-center gap-2">
-        <i class="fa-solid fa-cloud-arrow-down"></i>
-        <span>Download HD PNG</span>
-      </button>
+      <!-- Action Buttons & Theme Switcher -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Light/Dark Mode Switcher -->
+        <button id="themeToggleBtn" type="button" aria-label="Toggle Theme" class="p-2 sm:px-3 sm:py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-amber-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition flex items-center gap-1.5 text-xs font-medium">
+          <i id="themeToggleIcon" class="fa-solid fa-moon text-sm"></i>
+          <span id="themeToggleLabel" class="hidden md:inline">Dark</span>
+        </button>
+
+        <button id="btnLoadSample" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-amber-50 dark:bg-slate-800 hover:bg-amber-100 dark:hover:bg-slate-700 text-amber-800 dark:text-amber-300 font-medium text-xs sm:text-sm transition border border-amber-300 dark:border-amber-500/30 flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+          <span class="hidden sm:inline">Sample</span>
+        </button>
+
+        <button id="btnPrint" class="px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium text-xs sm:text-sm transition border border-slate-300 dark:border-slate-700 flex items-center gap-1.5">
+          <i class="fa-solid fa-print text-xs"></i>
+          <span class="hidden sm:inline">PDF</span>
+        </button>
+
+        <button id="btnExportPNG" class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-gradient-to-r from-amber-600 to-rose-700 hover:from-amber-700 hover:to-rose-800 text-white font-semibold text-xs sm:text-sm transition shadow-md shadow-rose-950/20 flex items-center gap-1.5">
+          <i class="fa-solid fa-download text-xs"></i>
+          <span><span class="hidden sm:inline">Export </span>PNG</span>
+        </button>
+      </div>
+
     </div>
   </header>
 
-  <!-- Workspace Container -->
-  <main class="max-w-7xl mx-auto p-4 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <!-- Mobile Viewport Switcher Tabs (Visible on < lg screens) -->
+  <div class="lg:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-2 sticky top-[57px] z-40 flex justify-center gap-2 print:hidden shadow-sm">
+    <button id="tabFormBtn" class="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-rose-700 text-white shadow-sm flex items-center justify-center gap-1.5">
+      <i class="fa-solid fa-pen-to-square"></i> 1. Edit Details
+    </button>
+    <button id="tabPreviewBtn" class="flex-1 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center gap-1.5">
+      <i class="fa-solid fa-eye"></i> 2. View Preview
+    </button>
+  </div>
 
-    <!-- LEFT PANEL: Configuration & Form Input (5 cols) -->
-    <section class="lg:col-span-5 space-y-5 print:hidden">
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-7xl mx-auto w-full p-3 sm:p-5 lg:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-      <!-- Presets & Styling Controls -->
-      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl space-y-4">
-        <div class="flex items-center gap-2 text-amber-400 font-semibold text-sm tracking-wide uppercase">
+    <!-- LEFT COLUMN: Configurations & Input Form (5 Cols) -->
+    <section id="formColumn" class="lg:col-span-5 space-y-4 print:hidden block">
+
+      <!-- Presets & Design Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm space-y-3.5">
+        <div class="flex items-center gap-2 text-rose-700 dark:text-amber-400 font-bold text-xs tracking-wider uppercase">
           <i class="fa-solid fa-palette"></i> Design Presets & Themes
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Border Preset</label>
-            <select id="borderPreset" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Border Preset</label>
+            <select id="borderPreset" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-600">
               <option value="royal-corner">Royal Ornate Corner (Default)</option>
               <option value="gold-double">Double Gold & Filigree</option>
               <option value="paisley-mandala">Paisley Ethnic Frame</option>
@@ -77,8 +118,8 @@
           </div>
 
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Background Pattern</label>
-            <select id="bgPreset" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Background Preset</label>
+            <select id="bgPreset" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-600">
               <option value="watermark-ganesha">Ganesha Watermark</option>
               <option value="watermark-mandala">Mandala Center Watermark</option>
               <option value="bg-parchment">Warm Parchment Texture</option>
@@ -90,91 +131,90 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Accent Theme Color</label>
+            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Accent Theme Color</label>
             <div class="flex items-center gap-2">
-              <input type="color" id="themeColor" value="#8b1111" class="w-10 h-9 p-0.5 rounded border border-slate-700 bg-slate-900 cursor-pointer" />
-              <span id="themeColorHex" class="text-xs font-mono text-slate-400">#8b1111</span>
+              <input type="color" id="themeColor" value="#8b1111" class="w-10 h-9 p-0.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 cursor-pointer" />
+              <span id="themeColorHex" class="text-xs font-mono font-medium text-slate-600 dark:text-slate-400">#8b1111</span>
             </div>
           </div>
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Photo Layout</label>
-            <select id="photoPlacement" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Photo Layout</label>
+            <select id="photoPlacement" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-600">
               <option value="top-right">Top Right (Standard)</option>
-              <option value="center">Centered Under Header</option>
               <option value="hidden">No Photo (Text Only)</option>
             </select>
           </div>
         </div>
       </div>
 
-      <!-- Content Inputs Form -->
-      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-5 shadow-xl space-y-5">
+      <!-- Content Inputs Card -->
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
         
         <!-- Header & Invocations -->
         <div>
-          <h2 class="text-amber-400 font-semibold text-sm tracking-wide uppercase flex items-center gap-2 mb-3">
+          <h2 class="text-rose-700 dark:text-amber-400 font-bold text-xs tracking-wider uppercase flex items-center gap-1.5 mb-2.5">
             <i class="fa-solid fa-om"></i> Header & Religious Symbol
           </h2>
-          <div class="grid grid-cols-3 gap-2 mb-3">
-            <select id="symbolPreset" class="col-span-1 bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-xs text-slate-200">
-              <option value="ganesha">🕉️ Lord Ganesha</option>
-              <option value="om">ॐ Sacred Om</option>
+          <div class="grid grid-cols-3 gap-2 mb-2.5">
+            <select id="symbolPreset" class="col-span-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-2 py-2 text-xs text-slate-800 dark:text-slate-200">
+              <option value="ganesha">🕉️ Ganesha</option>
+              <option value="om">ॐ Om</option>
               <option value="swastik">卐 Swastik</option>
-              <option value="kalash">🏺 Mangal Kalash</option>
-              <option value="khanda">☬ Khanda Sahib</option>
-              <option value="crescent">☪️ Crescent Star</option>
-              <option value="buddha">☸️ Dharma Wheel</option>
-              <option value="cross">✝️ Holy Cross</option>
-              <option value="lotus">🪷 Sacred Lotus</option>
+              <option value="kalash">🏺 Kalash</option>
+              <option value="khanda">☬ Khanda</option>
+              <option value="crescent">☪️ Crescent</option>
+              <option value="buddha">☸️ Dharma</option>
+              <option value="cross">✝️ Cross</option>
+              <option value="lotus">🪷 Lotus</option>
               <option value="none">None</option>
             </select>
-            <input type="text" id="invocationText" value="|| Shri Ganeshay Namah ||" placeholder="e.g. || Om Namah Shivaya ||" class="col-span-2 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500" />
+            <input type="text" id="invocationText" value="|| Shri Ganeshay Namah ||" placeholder="Mantra / Invocation" class="col-span-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-600" />
           </div>
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Title Heading</label>
-            <input type="text" id="docTitle" value="Biodata" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-amber-500" />
+            <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Title Heading</label>
+            <input type="text" id="docTitle" value="Biodata" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-rose-600" />
           </div>
         </div>
 
-        <!-- Photo Upload -->
+        <!-- Photograph Upload -->
         <div>
-          <label class="block text-xs text-slate-400 mb-1">Candidate Photograph</label>
-          <div class="flex items-center gap-3">
-            <input type="file" id="photoInput" accept="image/*" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-amber-600 file:text-white hover:file:bg-amber-700 cursor-pointer" />
-            <button id="btnRemovePhoto" class="text-xs px-2.5 py-1.5 rounded bg-rose-900/60 hover:bg-rose-800 text-rose-200 hidden">Remove</button>
+          <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Candidate Photograph</label>
+          <div class="flex flex-wrap items-center gap-2">
+            <input type="file" id="photoInput" accept="image/*" class="text-xs text-slate-500 dark:text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-rose-700 file:text-white hover:file:bg-rose-800 cursor-pointer" />
+            <button id="btnRemovePhoto" class="text-xs px-2.5 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 dark:bg-rose-950/80 dark:hover:bg-rose-900 dark:text-rose-200 hidden">Remove</button>
           </div>
         </div>
 
-        <!-- Personal Details Section -->
-        <div class="border-t border-slate-700 pt-4">
+        <!-- Section 1: Personal -->
+        <div class="border-t border-slate-200 dark:border-slate-800 pt-3.5">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="text-sm font-semibold text-slate-200">1. Personal Details</h3>
-            <button type="button" data-section="personal" class="btnAddField text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
-              <i class="fa-solid fa-plus"></i> Add Field
+            <h3 class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">1. Personal Details</h3>
+            <button type="button" data-section="personal" class="btnAddField text-xs font-semibold text-rose-700 dark:text-amber-400 hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-plus text-[10px]"></i> Add Field
             </button>
           </div>
           <div id="fields-personal" class="space-y-2"></div>
         </div>
 
-        <!-- Family Details Section -->
-        <div class="border-t border-slate-700 pt-4">
+        <!-- Section 2: Family -->
+        <div class="border-t border-slate-200 dark:border-slate-800 pt-3.5">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="text-sm font-semibold text-slate-200">2. Family Details</h3>
-            <button type="button" data-section="family" class="btnAddField text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
-              <i class="fa-solid fa-plus"></i> Add Field
+            <h3 class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">2. Family Details</h3>
+            <button type="button" data-section="family" class="btnAddField text-xs font-semibold text-rose-700 dark:text-amber-400 hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-plus text-[10px]"></i> Add Field
             </button>
           </div>
           <div id="fields-family" class="space-y-2"></div>
         </div>
 
-        <!-- Contact Details Section -->
-        <div class="border-t border-slate-700 pt-4">
+        <!-- Section 3: Contact -->
+        <div class="border-t border-slate-200 dark:border-slate-800 pt-3.5">
           <div class="flex justify-between items-center mb-2">
-            <h3 class="text-sm font-semibold text-slate-200">3. Contact & Address Details</h3>
-            <button type="button" data-section="contact" class="btnAddField text-xs text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1">
-              <i class="fa-solid fa-plus"></i> Add Field
+            <h3 class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">3. Contact Details</h3>
+            <button type="button" data-section="contact" class="btnAddField text-xs font-semibold text-rose-700 dark:text-amber-400 hover:underline flex items-center gap-1">
+              <i class="fa-solid fa-plus text-[10px]"></i> Add Field
             </button>
           </div>
           <div id="fields-contact" class="space-y-2"></div>
@@ -183,22 +223,23 @@
       </div>
     </section>
 
-    <!-- RIGHT PANEL: Live A4 Realtime Bio-data Preview (7 cols) -->
-    <section class="lg:col-span-7 flex flex-col items-center">
-      <div class="w-full flex justify-between items-center px-1 mb-2">
-        <span class="text-xs text-slate-400 flex items-center gap-1">
-          <i class="fa-solid fa-eye text-amber-400"></i> Live Canvas Preview (A4 Scaled)
+    <!-- RIGHT COLUMN: Responsive Live Canvas Preview (7 Cols) -->
+    <section id="previewColumn" class="lg:col-span-7 flex flex-col items-center hidden lg:flex">
+      
+      <div class="w-full flex justify-between items-center mb-2 px-1">
+        <span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-eye text-rose-600 dark:text-amber-400"></i> A4 Canvas Preview
         </span>
-        <span class="text-xs text-slate-400">High Resolution Vector Ready</span>
+        <span class="text-[11px] text-slate-400">Vector High Quality</span>
       </div>
 
-      <!-- Preview Wrapper with scroll for small devices -->
-      <div class="w-full overflow-x-auto flex justify-center py-2">
+      <!-- Scaled Preview Box to guarantee fit on any mobile screen -->
+      <div class="w-full flex justify-center overflow-x-auto pb-4">
         
-        <!-- BIODATA SHEET ELEMENT (Captured by html2canvas) -->
+        <!-- BIODATA SHEET ELEMENT -->
         <div id="biodataPaper" class="biodata-paper border-royal-corner bg-watermark-ganesha relative text-slate-900 bg-white">
           
-          <!-- Outer Decorative Border Frame Elements -->
+          <!-- Ornate Border Overlays -->
           <div class="ornate-border-frame">
             <span class="corner-ornament top-left"></span>
             <span class="corner-ornament top-right"></span>
@@ -209,31 +250,24 @@
           <!-- Background Watermark Container -->
           <div id="watermarkLayer" class="watermark-layer"></div>
 
-          <!-- Document Inner Content -->
-          <div class="relative z-10 p-8 sm:p-10 flex flex-col h-full justify-between">
+          <!-- Inner Sheet Content -->
+          <div class="relative z-10 p-7 sm:p-10 flex flex-col h-full justify-between">
             
             <!-- Header Section -->
             <div class="text-center mb-4">
-              <!-- Religious Icon Symbol -->
-              <div id="renderSymbol" class="inline-flex items-center justify-center w-12 h-12 mb-1.5 text-3xl">
+              <div id="renderSymbol" class="inline-flex items-center justify-center w-12 h-12 mb-1 text-3xl">
                 🕉️
               </div>
-              
-              <!-- Document Title -->
               <h2 id="renderDocTitle" class="font-serif text-2xl sm:text-3xl font-bold tracking-wider uppercase text-theme">
                 Biodata
               </h2>
-
-              <!-- Invocation Shloka / Mantra -->
-              <p id="renderInvocation" class="text-sm font-semibold tracking-wide text-stone-700 italic mt-0.5 font-serif">
+              <p id="renderInvocation" class="text-xs sm:text-sm font-semibold tracking-wide text-stone-700 italic mt-0.5 font-serif">
                 || Shri Ganeshay Namah ||
               </p>
             </div>
 
-            <!-- Top Row: Details & Candidate Photo -->
-            <div class="relative flex flex-col sm:flex-row gap-6 items-start">
-              
-              <!-- Left Column: Personal Information -->
+            <!-- Top Row: Personal Details & Photo Frame -->
+            <div class="relative flex flex-col sm:flex-row gap-5 items-start">
               <div class="flex-1 w-full">
                 <div class="section-title">
                   <span class="text-theme">Personal Details</span>
@@ -241,19 +275,19 @@
                 <div id="renderPersonalTable" class="data-table"></div>
               </div>
 
-              <!-- Right Column: Candidate Photo Box -->
-              <div id="renderPhotoContainer" class="sm:w-44 w-36 mx-auto sm:mx-0 shrink-0 flex flex-col items-center">
+              <!-- Photo Frame Box -->
+              <div id="renderPhotoContainer" class="sm:w-40 w-32 mx-auto sm:mx-0 shrink-0 flex flex-col items-center">
                 <div class="photo-frame-wrapper shadow-md">
-                  <img id="renderCandidatePhoto" src="" alt="Candidate Photo" class="hidden object-cover w-full h-full" />
-                  <div id="photoPlaceholder" class="flex flex-col items-center justify-center h-full text-stone-400 bg-stone-50 border border-dashed border-stone-300 p-4 text-center">
-                    <i class="fa-regular fa-image text-3xl mb-1 text-stone-300"></i>
-                    <span class="text-[10px] font-medium leading-tight">Passport Photo Preview</span>
+                  <img id="renderCandidatePhoto" src="" alt="Candidate" class="hidden object-cover w-full h-full" />
+                  <div id="photoPlaceholder" class="flex flex-col items-center justify-center h-full text-stone-400 bg-stone-50 border border-dashed border-stone-300 p-3 text-center">
+                    <i class="fa-regular fa-image text-2xl sm:text-3xl mb-1 text-stone-300"></i>
+                    <span class="text-[10px] font-medium leading-tight">Passport Photo</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Middle Row: Family Information -->
+            <!-- Middle Row: Family Details -->
             <div class="mt-4">
               <div class="section-title">
                 <span class="text-theme">Family Details</span>
@@ -261,7 +295,7 @@
               <div id="renderFamilyTable" class="data-table"></div>
             </div>
 
-            <!-- Bottom Row: Contact & Address Information -->
+            <!-- Bottom Row: Contact Details -->
             <div class="mt-4">
               <div class="section-title">
                 <span class="text-theme">Contact Details</span>
@@ -269,10 +303,10 @@
               <div id="renderContactTable" class="data-table"></div>
             </div>
 
-            <!-- Footer / Salutation Accent -->
-            <div class="mt-6 pt-3 border-t border-stone-300/70 text-center flex items-center justify-center gap-3 text-xs text-stone-500 font-serif">
+            <!-- Traditional Salutation Footer Line -->
+            <div class="mt-6 pt-2.5 border-t border-stone-300/70 text-center flex items-center justify-center gap-2 text-[11px] sm:text-xs text-stone-500 font-serif">
               <span>✦</span>
-              <span>May this union bring lifelong joy and auspicious harmony</span>
+              <span>May this union bring lifelong joy, happiness and harmony</span>
               <span>✦</span>
             </div>
 
@@ -281,20 +315,50 @@
 
       </div>
     </section>
+
   </main>
 
-  <!-- Exporting Loader Modal -->
-  <div id="exportModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden">
-    <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl flex flex-col items-center max-w-xs text-center shadow-2xl">
-      <div class="animate-spin text-amber-500 text-3xl mb-3">
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 py-6 px-4 mt-auto print:hidden">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div>
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+          Crafted with care by 
+          <a href="https://jaysingh9518.vercel.app/" target="_blank" rel="noopener noreferrer" class="font-semibold text-rose-700 hover:text-rose-800 dark:text-amber-400 dark:hover:text-amber-300 underline underline-offset-4 decoration-rose-500/40 dark:decoration-amber-400/40 hover:decoration-current transition">
+            Jaysingh
+          </a>
+        </p>
+        <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-0.5">
+          Client-side generator — 100% private. No data is stored on any server.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+        <a href="https://jaysingh9518.vercel.app/" target="_blank" rel="noopener noreferrer" class="hover:text-rose-700 dark:hover:text-amber-400 transition" title="Portfolio">
+          <i class="fa-solid fa-globe"></i>
+        </a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-rose-700 dark:hover:text-amber-400 transition" title="GitHub Repository">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <span class="text-xs bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-full text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+          v1.2.0
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Loading Modal -->
+  <div id="exportModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col items-center max-w-xs text-center shadow-2xl">
+      <div class="animate-spin text-rose-700 dark:text-amber-400 text-3xl mb-3">
         <i class="fa-solid fa-spinner"></i>
       </div>
-      <h4 class="text-base font-semibold text-white mb-1">Generating HD PNG</h4>
-      <p class="text-xs text-slate-400">Rendering high-resolution vector elements & canvas...</p>
+      <h4 class="text-sm font-bold text-slate-900 dark:text-white mb-1">Generating HD PNG</h4>
+      <p class="text-xs text-slate-500 dark:text-slate-400">Rendering high-resolution vector elements & canvas...</p>
     </div>
   </div>
 
-  <!-- Custom App JS -->
+  <!-- App Script -->
   <script src="js/app.js"></script>
 </body>
 </html>

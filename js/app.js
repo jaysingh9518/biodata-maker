@@ -2,7 +2,7 @@
  * BioData Profile Maker Engine
  */
 
-// Initial Data Structure
+// Initial Biodata Defaults
 const defaultBiodata = {
   themeColor: '#8b1111',
   borderPreset: 'royal-corner',
@@ -13,31 +13,25 @@ const defaultBiodata = {
   photoUrl: '',
   photoPlacement: 'top-right',
   personalDetails: [
-    { label: 'Full Name', value: 'Jay Ramesh Sharma' },
+    { label: 'Full Name', value: 'Kunal Shamrao Kamble' },
     { label: 'Date of Birth', value: '15/08/1997' },
-    { label: 'Height', value: '5 ft 8 in (172 cm)' },
-    { label: 'Place of Birth', value: 'Pune, Maharashtra' },
-    { label: 'Religion / Caste', value: 'Hindu - Maratha (96 Kuli)' },
-    { label: 'Gotra', value: 'Kashyap' },
-    { label: 'Complexion', value: 'Fair' },
-    { label: 'Higher Education', value: 'B.Tech in Computer Engineering' },
-    { label: 'Occupation / Job', value: 'Senior Software Engineer' },
-    { label: 'Annual Income', value: '18 LPA' }
+    { label: 'Height', value: "5'5\"" },
+    { label: 'Place of Birth', value: 'Pune' },
+    { label: 'Caste', value: 'Mahar' },
+    { label: 'Religion', value: 'Buddhist' },
+    { label: 'Higher Education', value: '12th' },
+    { label: 'Job/Occupation', value: 'IT Technician' }
   ],
   familyDetails: [
-    { label: "Father's Name", value: 'Ramesh Balwant Sharma' },
-    { label: "Father's Profession", value: 'Retired Central Govt. Officer' },
-    { label: "Mother's Name", value: 'Sunita Ramesh Sharma' },
-    { label: "Mother's Profession", value: 'Homemaker' },
-    { label: 'Brothers', value: '1 Younger Brother (Pursuing MBA)' },
-    { label: 'Sisters', value: '1 Elder Sister (Married)' },
-    { label: 'Native Place', value: 'Satara, Maharashtra' }
+    { label: "Father's Name", value: 'Shamrao' },
+    { label: "Father's Occupation", value: 'Bakery Worker' },
+    { label: "Mother's Name", value: 'Nanda' },
+    { label: "Mother's Occupation", value: 'Housewife' },
+    { label: 'Sisters', value: '1 married' },
+    { label: 'Brothers', value: '1 younger brother' }
   ],
   contactDetails: [
-    { label: 'Contact Number', value: '+91 98765 43210' },
-    { label: 'WhatsApp Number', value: '+91 98765 43210' },
-    { label: 'Email Address', value: 'jay.sharma.contact@email.com' },
-    { label: 'Residential Address', value: 'Flat 402, Shivneri Heights, Baner Road, Pune - 411045' }
+    { label: 'Mobile Number', value: '8669485586' }
   ]
 };
 
@@ -59,6 +53,15 @@ const symbolIcons = {
 };
 
 // DOM References
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeToggleIcon = document.getElementById('themeToggleIcon');
+const themeToggleLabel = document.getElementById('themeToggleLabel');
+
+const tabFormBtn = document.getElementById('tabFormBtn');
+const tabPreviewBtn = document.getElementById('tabPreviewBtn');
+const formColumn = document.getElementById('formColumn');
+const previewColumn = document.getElementById('previewColumn');
+
 const borderPresetSelect = document.getElementById('borderPreset');
 const bgPresetSelect = document.getElementById('bgPreset');
 const themeColorInput = document.getElementById('themeColor');
@@ -92,6 +95,8 @@ const exportModal = document.getElementById('exportModal');
  * Initialize Application
  */
 function init() {
+  initThemeMode();
+  initMobileTabs();
   bindFormInputs();
   bindActionButtons();
   renderFormFields();
@@ -99,7 +104,59 @@ function init() {
 }
 
 /**
- * Render Dynamic Form Fields for Personal, Family & Contact
+ * Theme Mode Handler (Light default with localStorage memory)
+ */
+function initThemeMode() {
+  const savedTheme = localStorage.getItem('biodata_theme') || 'light';
+  applyTheme(savedTheme);
+
+  themeToggleBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    const newTheme = isDark ? 'light' : 'dark';
+    applyTheme(newTheme);
+    localStorage.setItem('biodata_theme', newTheme);
+  });
+}
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+    themeToggleIcon.className = 'fa-solid fa-sun text-amber-400';
+    if (themeToggleLabel) themeToggleLabel.textContent = 'Light';
+  } else {
+    document.documentElement.classList.remove('dark');
+    themeToggleIcon.className = 'fa-solid fa-moon text-slate-700';
+    if (themeToggleLabel) themeToggleLabel.textContent = 'Dark';
+  }
+}
+
+/**
+ * Mobile Tab Switcher (Form vs Preview on small screens)
+ */
+function initMobileTabs() {
+  if (!tabFormBtn || !tabPreviewBtn) return;
+
+  tabFormBtn.addEventListener('click', () => {
+    formColumn.classList.remove('hidden');
+    previewColumn.classList.add('hidden');
+    previewColumn.classList.remove('flex');
+
+    tabFormBtn.className = 'flex-1 py-1.5 text-xs font-semibold rounded-lg bg-rose-700 text-white shadow-sm flex items-center justify-center gap-1.5';
+    tabPreviewBtn.className = 'flex-1 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center gap-1.5';
+  });
+
+  tabPreviewBtn.addEventListener('click', () => {
+    formColumn.classList.add('hidden');
+    previewColumn.classList.remove('hidden');
+    previewColumn.classList.add('flex');
+
+    tabPreviewBtn.className = 'flex-1 py-1.5 text-xs font-semibold rounded-lg bg-rose-700 text-white shadow-sm flex items-center justify-center gap-1.5';
+    tabFormBtn.className = 'flex-1 py-1.5 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center justify-center gap-1.5';
+  });
+}
+
+/**
+ * Render Form Field inputs
  */
 function renderFormFields() {
   renderFieldGroup('personal', state.personalDetails);
@@ -113,31 +170,26 @@ function renderFieldGroup(sectionKey, dataArray) {
 
   dataArray.forEach((item, index) => {
     const row = document.createElement('div');
-    row.className = 'flex items-center gap-2 text-xs';
+    row.className = 'flex items-center gap-1.5 text-xs';
     row.innerHTML = `
-      <input type="text" value="${item.label}" data-sec="${sectionKey}" data-idx="${index}" data-type="label" placeholder="Field Name" class="w-1/3 bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-amber-500" />
-      <input type="text" value="${item.value}" data-sec="${sectionKey}" data-idx="${index}" data-type="value" placeholder="Field Value" class="flex-1 bg-slate-900 border border-slate-700 rounded px-2.5 py-1.5 text-slate-200 focus:outline-none focus:border-amber-500" />
-      <button type="button" data-sec="${sectionKey}" data-idx="${index}" class="btnDeleteField text-slate-500 hover:text-rose-400 p-1">
+      <input type="text" value="${item.label}" data-sec="${sectionKey}" data-idx="${index}" data-type="label" placeholder="Field" class="w-1/3 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-600" />
+      <input type="text" value="${item.value}" data-sec="${sectionKey}" data-idx="${index}" data-type="value" placeholder="Value" class="flex-1 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-1 focus:ring-rose-600" />
+      <button type="button" data-sec="${sectionKey}" data-idx="${index}" class="btnDeleteField text-slate-400 hover:text-rose-600 p-1">
         <i class="fa-solid fa-trash-can"></i>
       </button>
     `;
     container.appendChild(row);
   });
 
-  // Attach event listeners to newly rendered input boxes
   container.querySelectorAll('input').forEach(input => {
     input.addEventListener('input', handleFieldChange);
   });
 
-  // Attach event listeners to delete buttons
   container.querySelectorAll('.btnDeleteField').forEach(btn => {
     btn.addEventListener('click', handleDeleteField);
   });
 }
 
-/**
- * Event Handlers for Field Updates
- */
 function handleFieldChange(e) {
   const sec = e.target.dataset.sec;
   const idx = parseInt(e.target.dataset.idx, 10);
@@ -173,32 +225,27 @@ function handleDeleteField(e) {
  * Bind Static Form Inputs
  */
 function bindFormInputs() {
-  // Theme Color
   themeColorInput.addEventListener('input', (e) => {
     state.themeColor = e.target.value;
     themeColorHex.textContent = e.target.value;
     renderCanvas();
   });
 
-  // Border Preset
   borderPresetSelect.addEventListener('change', (e) => {
     state.borderPreset = e.target.value;
     renderCanvas();
   });
 
-  // Background Preset
   bgPresetSelect.addEventListener('change', (e) => {
     state.bgPreset = e.target.value;
     renderCanvas();
   });
 
-  // Symbol Preset
   symbolPresetSelect.addEventListener('change', (e) => {
     state.symbolPreset = e.target.value;
     renderCanvas();
   });
 
-  // Invocation & Title
   invocationInput.addEventListener('input', (e) => {
     state.invocation = e.target.value;
     renderCanvas();
@@ -209,13 +256,11 @@ function bindFormInputs() {
     renderCanvas();
   });
 
-  // Photo Placement
   photoPlacementSelect.addEventListener('change', (e) => {
     state.photoPlacement = e.target.value;
     renderCanvas();
   });
 
-  // Image Upload Handling
   photoInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -236,7 +281,6 @@ function bindFormInputs() {
     renderCanvas();
   });
 
-  // Add Field Buttons
   document.querySelectorAll('.btnAddField').forEach(btn => {
     btn.addEventListener('click', () => {
       const sec = btn.dataset.section;
@@ -245,7 +289,7 @@ function bindFormInputs() {
         family: 'familyDetails',
         contact: 'contactDetails'
       };
-      state[keyMap[sec]].push({ label: 'New Field', value: 'Value' });
+      state[keyMap[sec]].push({ label: 'Field', value: 'Value' });
       renderFormFields();
       renderCanvas();
     });
@@ -253,7 +297,7 @@ function bindFormInputs() {
 }
 
 /**
- * Bind Action Buttons: Sample, Print, Export
+ * Bind Action Buttons
  */
 function bindActionButtons() {
   btnLoadSample.addEventListener('click', () => {
@@ -283,13 +327,9 @@ function bindActionButtons() {
  * Render the Live Preview Canvas
  */
 function renderCanvas() {
-  // 1. Apply Theme Color Variable
   document.documentElement.style.setProperty('--theme-color', state.themeColor);
-
-  // 2. Apply Border Classes
   biodataPaper.className = `biodata-paper relative text-slate-900 border-${state.borderPreset} bg-${state.bgPreset}`;
 
-  // 3. Render Header
   renderDocTitle.textContent = state.docTitle || 'Biodata';
   renderInvocation.textContent = state.invocation || '';
   
@@ -301,7 +341,6 @@ function renderCanvas() {
     renderSymbol.classList.remove('hidden');
   }
 
-  // 4. Candidate Photo Rendering
   if (state.photoPlacement === 'hidden') {
     renderPhotoContainer.classList.add('hidden');
   } else {
@@ -317,7 +356,6 @@ function renderCanvas() {
     }
   }
 
-  // 5. Render Detail Tables
   renderTable(renderPersonalTable, state.personalDetails);
   renderTable(renderFamilyTable, state.familyDetails);
   renderTable(renderContactTable, state.contactDetails);
@@ -345,7 +383,7 @@ function escapeHtml(string) {
 }
 
 /**
- * Export 2x HD PNG via html2canvas
+ * Export 2.2x High-Resolution PNG
  */
 async function exportHighResPNG() {
   exportModal.classList.remove('hidden');
@@ -353,8 +391,12 @@ async function exportHighResPNG() {
   try {
     const targetElement = document.getElementById('biodataPaper');
 
+    // Temporarily reset any mobile scale transform for accurate capture
+    const originalTransform = targetElement.style.transform;
+    targetElement.style.transform = 'none';
+
     const canvas = await html2canvas(targetElement, {
-      scale: 2.2, // 2.2x pixel ratio for sharp print-grade quality
+      scale: 2.2,
       useCORS: true,
       logging: false,
       backgroundColor: null,
@@ -362,20 +404,21 @@ async function exportHighResPNG() {
       scrollY: 0
     });
 
+    targetElement.style.transform = originalTransform;
+
     const link = document.createElement('a');
-    const safeName = (state.personalDetails[0]?.value || 'Matrimonial')
+    const safeName = (state.personalDetails[0]?.value || 'Profile')
       .replace(/[^a-zA-Z0-9]/g, '_')
       .toLowerCase();
     link.download = `BioData_${safeName}.png`;
     link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
   } catch (error) {
-    console.error('Failed to generate PNG export:', error);
-    alert('An error occurred during PNG generation. Check console for details.');
+    console.error('Export failed:', error);
+    alert('An error occurred during PNG generation.');
   } finally {
     exportModal.classList.add('hidden');
   }
 }
 
-// Start application on DOM Ready
 document.addEventListener('DOMContentLoaded', init);

@@ -12,32 +12,49 @@
   border-color: var(--theme-color);
 }
 
-/* A4 Sheet Dimensions on Display */
+/* A4 Sheet Dimensions */
 .biodata-paper {
   width: 210mm;
   min-height: 297mm;
   box-sizing: border-box;
-  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, 0.18);
   background-color: #ffffff;
   position: relative;
   overflow: hidden;
   font-family: 'Lora', Georgia, serif;
 }
 
+/* Auto-scale sheet nicely on smaller screens to avoid overflow */
+@media screen and (max-width: 900px) {
+  .biodata-paper {
+    transform-origin: top center;
+    transform: scale(0.85);
+    margin-bottom: -15%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .biodata-paper {
+    transform-origin: top center;
+    transform: scale(0.55);
+    margin-bottom: -50%;
+  }
+}
+
 /* Section Header Titles */
 .section-title {
   font-family: 'Cinzel', serif;
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   border-bottom: 2px solid var(--theme-color);
   padding-bottom: 0.25rem;
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.55rem;
   display: flex;
   align-items: center;
 }
 
-/* Data Table Columns */
+/* Detail Tables */
 .data-table {
   display: flex;
   flex-direction: column;
@@ -46,7 +63,7 @@
 
 .data-row {
   display: flex;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   line-height: 1.35;
   color: #27272a;
 }
@@ -71,8 +88,8 @@
 
 /* Photo Frame Stylings */
 .photo-frame-wrapper {
-  width: 145px;
-  height: 185px;
+  width: 140px;
+  height: 180px;
   border: 3px double var(--theme-color);
   padding: 3px;
   background: #ffffff;
@@ -172,21 +189,18 @@
   background-repeat: no-repeat;
 }
 
-/* Ganesha Watermark */
 .bg-watermark-ganesha .watermark-layer {
   background-size: 320px;
   opacity: 0.08;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%238b1111' d='M256 0c141.4 0 256 114.6 256 256S397.4 512 256 512 0 397.4 0 256 114.6 0 256 0zm0 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm12.5 76.5c31 0 56.5 25.5 56.5 56.5 0 25-16.5 46.5-39 53.5 1.5 5.5 2.5 11.5 2.5 17.5 0 35.5-28.5 64-64 64s-64-28.5-64-64c0-6 1-12 2.5-17.5-22.5-7-39-28.5-39-53.5 0-31 25.5-56.5 56.5-56.5 8.5 0 16.5 2 24 5.5 7.5-3.5 15.5-5.5 24-5.5z'/%3E%3C/svg%3E");
 }
 
-/* Mandala Watermark */
 .bg-watermark-mandala .watermark-layer {
   background-size: 360px;
   opacity: 0.07;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' stroke='%238b1111' stroke-width='1.5' fill='none' stroke-dasharray='3 2'/%3E%3Ccircle cx='50' cy='50' r='35' stroke='%238b1111' stroke-width='1' fill='none'/%3E%3Ccircle cx='50' cy='50' r='25' stroke='%238b1111' stroke-width='1' fill='none'/%3E%3Cpath d='M50 5 L50 95 M5 50 L95 50 M18 18 L82 82 M18 82 L82 18' stroke='%238b1111' stroke-width='0.75'/%3E%3C/svg%3E");
 }
 
-/* Textured Background Colors */
 .bg-parchment {
   background-color: #fdfaf2 !important;
 }
@@ -217,8 +231,12 @@
     padding: 0 !important;
   }
 
-  header, section:first-child, .print\:hidden {
+  header, footer, #formColumn, .print\:hidden, .lg\:hidden {
     display: none !important;
+  }
+
+  #previewColumn {
+    display: block !important;
   }
 
   main {
@@ -233,6 +251,7 @@
     margin: 0 auto !important;
     width: 210mm !important;
     height: 297mm !important;
+    transform: none !important;
     page-break-after: avoid !important;
     page-break-inside: avoid !important;
   }
