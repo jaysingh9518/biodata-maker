@@ -87,9 +87,11 @@ const renderPhotoContainer = document.getElementById('renderPhotoContainer');
 
 // Action Buttons
 const btnLoadSample = document.getElementById('btnLoadSample');
-const btnPrint = document.getElementById('btnPrint');
+const btnExportPDF = document.getElementById('btnExportPDF');
 const btnExportPNG = document.getElementById('btnExportPNG');
 const exportModal = document.getElementById('exportModal');
+const exportModalTitle = document.getElementById('exportModalTitle');
+const exportModalDesc = document.getElementById('exportModalDesc');
 
 /**
  * Initialize Application
@@ -316,10 +318,7 @@ function bindActionButtons() {
     renderCanvas();
   });
 
-  btnPrint.addEventListener('click', () => {
-    window.print();
-  });
-
+  btnExportPDF.addEventListener('click', exportA4PDF);
   btnExportPNG.addEventListener('click', exportHighResPNG);
 }
 
@@ -383,28 +382,77 @@ function escapeHtml(string) {
 }
 
 /**
- * Export 2.2x High-Resolution PNG
+ * Helper: Render High-Resolution Canvas from DOM
  */
-async function exportHighResPNG() {
+async function captureBiodataCanvas() {
+  const targetElement = document.getElementById('biodataPaper');
+  
+  // Temporarily reset any responsive scale transform for 1:1 capture
+  const originalTransform = targetElement.style.transform;
+  targetElement.style.transform = 'none';
+
+  const canvas = await html2canvas(targetElement, {
+    scale: 2.2, // 2.2x pixel ratio for sharp print-grade quality
+    useCORS: true,
+    logging: false,
+    backgroundColor: '#ffffff',
+    scrollX: 0,
+    scrollY: 0
+  });
+
+  targetElement.style.transform = originalTransform;
+  return canvas;
+}
+
+/**
+ * Direct A4 PDF Generation & Download (No Print Dialog)
+ */
+async function exportA4PDF() {
+  exportModalTitle.textContent = 'Generating A4 PDF';
+  exportModalDesc.textContent = 'Rendering layout and building PDF document...';
   exportModal.classList.remove('hidden');
 
   try {
-    const targetElement = document.getElementById('biodataPaper');
+    const canvas = await captureBiodataCanvas();
+    const imgData = canvas.toDataURL('image/jpeg', 0.98);
 
-    // Temporarily reset any mobile scale transform for accurate capture
-    const originalTransform = targetElement.style.transform;
-    targetElement.style.transform = 'none';
-
-    const canvas = await html2canvas(targetElement, {
-      scale: 2.2,
-      useCORS: true,
-      logging: false,
-      backgroundColor: null,
-      scrollX: 0,
-      scrollY: 0
+    // Standard A4 dimensions in mm: 210 x 297
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true
     });
 
-    targetElement.style.transform = originalTransform;
+    const pdfWidth = 210;
+    const pdfHeight = 297;
+
+    pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, '', 'FAST');
+
+    const safeName = (state.personalDetails[0]?.value || 'Profile')
+      .replace(/[^a-zA-Z0-9]/g, '_')
+      .toLowerCase();
+
+    pdf.save(`BioData_${safeName}.pdf`);
+  } catch (error) {
+    console.error('PDF export failed:', error);
+    alert('An error occurred during PDF export. Check console for details.');
+  } finally {
+    exportModal.classList.add('hidden');
+  }
+}
+
+/**
+ * Export 2.2x High-Resolution PNG
+ */
+async function exportHighResPNG() {
+  exportModalTitle.textContent = 'Generating HD PNG';
+  exportModalDesc.textContent = 'Rendering vector elements and high-res image...';
+  exportModal.classList.remove('hidden');
+
+  try {
+    const canvas = await captureBiodataCanvas();
 
     const link = document.createElement('a');
     const safeName = (state.personalDetails[0]?.value || 'Profile')
@@ -414,7 +462,7 @@ async function exportHighResPNG() {
     link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
   } catch (error) {
-    console.error('Export failed:', error);
+    console.error('PNG export failed:', error);
     alert('An error occurred during PNG generation.');
   } finally {
     exportModal.classList.add('hidden');
