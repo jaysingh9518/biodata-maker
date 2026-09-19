@@ -1,0 +1,239 @@
+/* Custom Global & Layout Styles */
+:root {
+  --theme-color: #8b1111;
+  --theme-gold: #c59b27;
+}
+
+.text-theme {
+  color: var(--theme-color);
+}
+
+.border-theme {
+  border-color: var(--theme-color);
+}
+
+/* A4 Sheet Dimensions on Display */
+.biodata-paper {
+  width: 210mm;
+  min-height: 297mm;
+  box-sizing: border-box;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5);
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Lora', Georgia, serif;
+}
+
+/* Section Header Titles */
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--theme-color);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Data Table Columns */
+.data-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.data-row {
+  display: flex;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: #27272a;
+}
+
+.data-label {
+  width: 38%;
+  font-weight: 600;
+  color: #1c1917;
+}
+
+.data-colon {
+  width: 4%;
+  font-weight: bold;
+  color: var(--theme-color);
+}
+
+.data-value {
+  width: 58%;
+  font-weight: 500;
+  color: #292524;
+}
+
+/* Photo Frame Stylings */
+.photo-frame-wrapper {
+  width: 145px;
+  height: 185px;
+  border: 3px double var(--theme-color);
+  padding: 3px;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------
+   BORDER PRESETS
+------------------------------------------------------------- */
+/* 1. Royal Ornate Corner */
+.border-royal-corner {
+  border: 8px solid #ffffff;
+  outline: 2px solid var(--theme-color);
+  outline-offset: -12px;
+}
+
+.border-royal-corner .ornate-border-frame::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed var(--theme-gold);
+  pointer-events: none;
+}
+
+.border-royal-corner .corner-ornament {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.border-royal-corner .corner-ornament.top-left {
+  top: 10px;
+  left: 10px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M8,8 L8,65 Q8,40 35,35 Q60,35 65,8 Z M8,8 Q35,8 45,45 Q8,35 8,8' fill='%238b1111'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%23c59b27'/%3E%3C/svg%3E");
+}
+
+.border-royal-corner .corner-ornament.top-right {
+  top: 10px;
+  right: 10px;
+  transform: scaleX(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M8,8 L8,65 Q8,40 35,35 Q60,35 65,8 Z M8,8 Q35,8 45,45 Q8,35 8,8' fill='%238b1111'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%23c59b27'/%3E%3C/svg%3E");
+}
+
+.border-royal-corner .corner-ornament.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  transform: scaleY(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M8,8 L8,65 Q8,40 35,35 Q60,35 65,8 Z M8,8 Q35,8 45,45 Q8,35 8,8' fill='%238b1111'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%23c59b27'/%3E%3C/svg%3E");
+}
+
+.border-royal-corner .corner-ornament.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  transform: scale(-1, -1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M8,8 L8,65 Q8,40 35,35 Q60,35 65,8 Z M8,8 Q35,8 45,45 Q8,35 8,8' fill='%238b1111'/%3E%3Ccircle cx='20' cy='20' r='5' fill='%23c59b27'/%3E%3C/svg%3E");
+}
+
+/* 2. Double Gold Frame */
+.border-gold-double {
+  border: 14px double var(--theme-gold);
+  box-shadow: inset 0 0 0 3px var(--theme-color);
+}
+
+/* 3. Paisley Ethnic Frame */
+.border-paisley-mandala {
+  border: 16px solid var(--theme-color);
+  outline: 3px solid var(--theme-gold);
+  outline-offset: -8px;
+}
+
+/* 4. Geometric Frame */
+.border-geometric-arch {
+  border: 2px solid var(--theme-color);
+  outline: 6px solid #f3e8d2;
+  outline-offset: -12px;
+}
+
+/* 5. Clean Classic */
+.border-classic-box {
+  border: 3px solid var(--theme-color);
+}
+
+/* -------------------------------------------------------------
+   BACKGROUND / WATERMARK PRESETS
+------------------------------------------------------------- */
+.watermark-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Ganesha Watermark */
+.bg-watermark-ganesha .watermark-layer {
+  background-size: 320px;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cpath fill='%238b1111' d='M256 0c141.4 0 256 114.6 256 256S397.4 512 256 512 0 397.4 0 256 114.6 0 256 0zm0 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm12.5 76.5c31 0 56.5 25.5 56.5 56.5 0 25-16.5 46.5-39 53.5 1.5 5.5 2.5 11.5 2.5 17.5 0 35.5-28.5 64-64 64s-64-28.5-64-64c0-6 1-12 2.5-17.5-22.5-7-39-28.5-39-53.5 0-31 25.5-56.5 56.5-56.5 8.5 0 16.5 2 24 5.5 7.5-3.5 15.5-5.5 24-5.5z'/%3E%3C/svg%3E");
+}
+
+/* Mandala Watermark */
+.bg-watermark-mandala .watermark-layer {
+  background-size: 360px;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' stroke='%238b1111' stroke-width='1.5' fill='none' stroke-dasharray='3 2'/%3E%3Ccircle cx='50' cy='50' r='35' stroke='%238b1111' stroke-width='1' fill='none'/%3E%3Ccircle cx='50' cy='50' r='25' stroke='%238b1111' stroke-width='1' fill='none'/%3E%3Cpath d='M50 5 L50 95 M5 50 L95 50 M18 18 L82 82 M18 82 L82 18' stroke='%238b1111' stroke-width='0.75'/%3E%3C/svg%3E");
+}
+
+/* Textured Background Colors */
+.bg-parchment {
+  background-color: #fdfaf2 !important;
+}
+
+.bg-ivory {
+  background-color: #fffff0 !important;
+}
+
+.bg-pastel-peach {
+  background-color: #fff6ee !important;
+}
+
+.bg-rose-tint {
+  background-color: #fdf4f4 !important;
+}
+
+.bg-pure-white {
+  background-color: #ffffff !important;
+}
+
+/* -------------------------------------------------------------
+   PRINT & A4 MEDIA STYLES
+------------------------------------------------------------- */
+@media print {
+  body {
+    background: transparent !important;
+    color: black !important;
+    padding: 0 !important;
+  }
+
+  header, section:first-child, .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+
+  .biodata-paper {
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+}
